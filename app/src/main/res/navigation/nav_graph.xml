@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/productListFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.tanvir.training.ecomuserbatch1.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_productListFragment"
+            app:destination="@id/productListFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.tanvir.training.ecomuserbatch1.ProductListFragment"
+        android:label="Products"
+        tools:layout="@layout/fragment_product_list" >
+        <action
+            android:id="@+id/action_productListFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/productListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.tanvir.training.ecomuserbatch1.UserProfileFragment"
+        android:label="My Profile"
+        tools:layout="@layout/fragment_user_profile" />
+    <fragment
+        android:id="@+id/userOrderFragment"
+        android:name="com.tanvir.training.ecomuserbatch1.UserOrderFragment"
+        android:label="My Orders"
+        tools:layout="@layout/fragment_user_order" />
+    <fragment
+        android:id="@+id/cartListFragment"
+        android:name="com.tanvir.training.ecomuserbatch1.CartListFragment"
+        android:label="My Cart"
+        tools:layout="@layout/fragment_cart_list" />
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.tanvir.training.ecomuserbatch1.CheckoutFragment"
+        android:label="Checkout"
+        tools:layout="@layout/fragment_checkout" />
+</navigation>

@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "924540269826",
+    "project_id": "ecomseipbatch1",
+    "storage_bucket": "ecomseipbatch1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924540269826:android:45045fdbfd3653dbd57e1b",
+        "android_client_info": {
+          "package_name": "com.tanvir.training.ecomadminbatch1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "924540269826-8hjc0b2knfersmtl974qe3f9a4i8ah35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-dQGG5nPgr1MEVtkFlikM_1jS6_7RyKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "924540269826-8hjc0b2knfersmtl974qe3f9a4i8ah35.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924540269826:android:03de3daed90b5884d57e1b",
+        "android_client_info": {
+          "package_name": "com.tanvir.training.ecomuserbatch1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "924540269826-8hjc0b2knfersmtl974qe3f9a4i8ah35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-dQGG5nPgr1MEVtkFlikM_1jS6_7RyKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "924540269826-8hjc0b2knfersmtl974qe3f9a4i8ah35.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
