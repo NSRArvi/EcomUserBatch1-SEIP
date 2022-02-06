@@ -13,6 +13,11 @@ public class Constants {
     public static final String HOUR = "hour";
     public static final String MINUTE = "minute";
 
+    public static class PaymentMethod {
+        public static final String COD = "Cash on Delivery";
+        public static final String ONLINE = "Online Payment";
+    }
+
     public static class DbCollection{
         public static final String COLLECTION_PRODUCT = "Products";
         public static final String COLLECTION_PURCHASE = "Purchases";

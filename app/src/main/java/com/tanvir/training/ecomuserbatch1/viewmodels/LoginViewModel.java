@@ -12,7 +12,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.tanvir.training.ecomuserbatch1.callbacks.OnActionCompleteListener;
 import com.tanvir.training.ecomuserbatch1.models.EcomUser;
 import com.tanvir.training.ecomuserbatch1.utils.Constants;
 
@@ -21,6 +23,7 @@ public class LoginViewModel extends ViewModel {
     public enum AuthState {
         AUTHENTICATED, UNAUTHENTICATED
     }
+    final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private MutableLiveData<AuthState> stateLiveData;
     private MutableLiveData<String> errMsgLiveData;
     private FirebaseAuth auth;
@@ -109,6 +112,34 @@ public class LoginViewModel extends ViewModel {
 
             }
         });
+    }
+
+    public LiveData<EcomUser> getUserData() {
+        final MutableLiveData<EcomUser> userLiveData = new MutableLiveData<>();
+        db.collection(Constants.DbCollection.COLLECTION_USERS)
+                .document(user.getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    final EcomUser ecomUser = documentSnapshot.toObject(EcomUser.class);
+                    userLiveData.postValue(ecomUser);
+                }).addOnFailureListener(e -> {
+
+                });
+
+        return userLiveData;
+    }
+
+    public void updateDeliveryAddress(String address, OnActionCompleteListener actionCompleteListener) {
+        final DocumentReference doc =
+                db.collection(Constants.DbCollection.COLLECTION_USERS)
+                .document(user.getUid());
+        doc.update("deliveryAddress", address)
+                .addOnSuccessListener(unused -> {
+                    actionCompleteListener.onSuccess();
+                })
+                .addOnFailureListener(unused -> {
+                    actionCompleteListener.onFailure();
+                });
     }
 
 }

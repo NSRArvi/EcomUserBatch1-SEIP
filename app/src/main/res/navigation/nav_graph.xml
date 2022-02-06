@@ -41,7 +41,11 @@
         android:id="@+id/cartListFragment"
         android:name="com.tanvir.training.ecomuserbatch1.CartListFragment"
         android:label="My Cart"
-        tools:layout="@layout/fragment_cart_list" />
+        tools:layout="@layout/fragment_cart_list" >
+        <action
+            android:id="@+id/action_cartListFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.tanvir.training.ecomuserbatch1.CheckoutFragment"

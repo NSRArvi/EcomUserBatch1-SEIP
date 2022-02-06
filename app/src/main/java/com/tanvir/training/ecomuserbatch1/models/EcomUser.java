@@ -5,6 +5,7 @@ public class EcomUser {
     private String name;
     private String email;
     private String photo;
+    private String deliveryAddress;
 
     public EcomUser() {
     }
@@ -18,6 +19,14 @@ public class EcomUser {
 
     public String getUid() {
         return uid;
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
     }
 
     public void setUid(String uid) {

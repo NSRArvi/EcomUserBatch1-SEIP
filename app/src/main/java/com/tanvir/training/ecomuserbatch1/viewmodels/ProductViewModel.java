@@ -33,6 +33,7 @@ public class ProductViewModel extends ViewModel {
     public MutableLiveData<List<ProductModel>> productListLiveData = new MutableLiveData<>();
     public MutableLiveData<List<UserProductModel>> userProductListLiveData = new MutableLiveData<>();
     public MutableLiveData<List<CartModel>> cartListLiveData = new MutableLiveData<>();
+    public List<CartModel> cartModelList = new ArrayList<>();
 
     private final String TAG = ProductViewModel.class.getSimpleName();
     public ProductViewModel() {
@@ -63,6 +64,24 @@ public class ProductViewModel extends ViewModel {
                     completeListener.onSuccess();
                 }).addOnFailureListener(e -> {
                     completeListener.onFailure();
+        });
+    }
+
+    public void updateCartQuantity(String uid, List<CartModel> cartModels) {
+        final WriteBatch batch = db.batch();
+        for (CartModel c : cartModels) {
+            final DocumentReference doc =
+                    db.collection(Constants.DbCollection.COLLECTION_USERS)
+                    .document(uid)
+                    .collection(Constants.DbCollection.COLLECTION_CART)
+                    .document(c.getProductId());
+            batch.update(doc, "quantity", c.getQuantity());
+        }
+        batch.commit().addOnSuccessListener(unused -> {
+
+        })
+        .addOnFailureListener(unused -> {
+
         });
     }
 
@@ -179,5 +198,13 @@ public class ProductViewModel extends ViewModel {
                             value.toObject(ProductModel.class));
                 });
         return productLiveData;
+    }
+
+    public double calculateTotalPrice(List<CartModel> cartModels) {
+        double total = 0.0;
+        for (CartModel c : cartModels) {
+            total += c.getPrice() * c.getQuantity();
+        }
+        return total;
     }
 }
