@@ -54,6 +54,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(
                 this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        loginViewModel.getStateLiveData().observe(this, authState -> {
+            navController.popBackStack();
+            if (authState == LoginViewModel.AuthState.AUTHENTICATED) {
+                navController
+                        .navigate(R.id.productListFragment);
+            }else {
+                navController
+                        .navigate(R.id.loginFragment);
+            }
+        });
+
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             if (navDestination.getId() == R.id.loginFragment) {
                 toolbar.setVisibility(View.GONE);

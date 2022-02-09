@@ -20,6 +20,7 @@ import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.firestore.auth.User;
 import com.tanvir.training.ecomuserbatch1.callbacks.OnActionCompleteListener;
 import com.tanvir.training.ecomuserbatch1.models.CartModel;
+import com.tanvir.training.ecomuserbatch1.models.OrderModel;
 import com.tanvir.training.ecomuserbatch1.models.ProductModel;
 import com.tanvir.training.ecomuserbatch1.models.UserProductModel;
 import com.tanvir.training.ecomuserbatch1.utils.Constants;
@@ -31,9 +32,11 @@ public class ProductViewModel extends ViewModel {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     public MutableLiveData<List<String>> categoryListLiveData = new MutableLiveData<>();
     public MutableLiveData<List<ProductModel>> productListLiveData = new MutableLiveData<>();
+
     public MutableLiveData<List<UserProductModel>> userProductListLiveData = new MutableLiveData<>();
     public MutableLiveData<List<CartModel>> cartListLiveData = new MutableLiveData<>();
     public List<CartModel> cartModelList = new ArrayList<>();
+    public String paymentMethod = Constants.PaymentMethod.COD;
 
     private final String TAG = ProductViewModel.class.getSimpleName();
     public ProductViewModel() {
@@ -141,6 +144,23 @@ public class ProductViewModel extends ViewModel {
                     }
                     cartListLiveData.postValue(cartModels);
                 });
+    }
+
+    public void clearCart(String uid, List<CartModel> cartModels) {
+        final WriteBatch writeBatch = db.batch();
+        for (CartModel c : cartModels) {
+            final DocumentReference doc = db.collection(Constants.DbCollection.COLLECTION_USERS)
+                    .document(uid)
+                    .collection(Constants.DbCollection.COLLECTION_CART)
+                    .document(c.getProductId());
+            writeBatch.delete(doc);
+        }
+        writeBatch.commit()
+                .addOnSuccessListener(unused -> {
+                    getAllCartItems(uid);
+                })
+                .addOnFailureListener(unused -> {});
+
     }
 
     private void prepareUserProductList(List<CartModel> cartModels) {

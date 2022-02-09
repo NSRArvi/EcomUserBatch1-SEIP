@@ -26,6 +26,7 @@ public class LoginViewModel extends ViewModel {
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private MutableLiveData<AuthState> stateLiveData;
     private MutableLiveData<String> errMsgLiveData;
+    private MutableLiveData<EcomUser> ecomUserMutableLiveData = new MutableLiveData<>();
     private FirebaseAuth auth;
     private FirebaseUser user;
 
@@ -39,6 +40,10 @@ public class LoginViewModel extends ViewModel {
         }else {
             stateLiveData.postValue(AuthState.AUTHENTICATED);
         }
+    }
+
+    public MutableLiveData<EcomUser> getEcomUserMutableLiveData() {
+        return ecomUserMutableLiveData;
     }
 
     public LiveData<AuthState> getStateLiveData() {
@@ -63,24 +68,24 @@ public class LoginViewModel extends ViewModel {
                 });
     }
 
-    public void register(String email, String password) {
+    public void register(String email, String password, String phoneNumber) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     user = authResult.getUser();
                     stateLiveData.postValue(AuthState.AUTHENTICATED);
-                    addUserToDatabase();
+                    addUserToDatabase(phoneNumber);
                 }).addOnFailureListener(e -> {
             errMsgLiveData.postValue(e.getLocalizedMessage());
         });
     }
 
-    private void addUserToDatabase() {
+    private void addUserToDatabase(String phoneNumber) {
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final DocumentReference doc =
                 db.collection(Constants.DbCollection.COLLECTION_USERS)
                 .document(user.getUid());
         final EcomUser ecomUser = new EcomUser(
-                user.getUid(), null, user.getEmail(), null);
+                user.getUid(), null, user.getEmail(), null, phoneNumber);
         doc.set(ecomUser).addOnSuccessListener(unused -> {
 
         }).addOnFailureListener(e -> {
@@ -114,19 +119,18 @@ public class LoginViewModel extends ViewModel {
         });
     }
 
-    public LiveData<EcomUser> getUserData() {
+    public void getUserData() {
         final MutableLiveData<EcomUser> userLiveData = new MutableLiveData<>();
         db.collection(Constants.DbCollection.COLLECTION_USERS)
                 .document(user.getUid())
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     final EcomUser ecomUser = documentSnapshot.toObject(EcomUser.class);
-                    userLiveData.postValue(ecomUser);
+                    ecomUserMutableLiveData.postValue(ecomUser);
                 }).addOnFailureListener(e -> {
 
                 });
 
-        return userLiveData;
     }
 
     public void updateDeliveryAddress(String address, OnActionCompleteListener actionCompleteListener) {

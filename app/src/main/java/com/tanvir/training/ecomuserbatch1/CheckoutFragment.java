@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,6 @@ public class CheckoutFragment extends Fragment {
     private ProductViewModel productViewModel;
     private LoginViewModel loginViewModel;
     private FragmentCheckoutBinding binding;
-    private String paymentMethod = Constants.PaymentMethod.COD;
     public CheckoutFragment() { }
 
 
@@ -34,12 +34,13 @@ public class CheckoutFragment extends Fragment {
                 .get(ProductViewModel.class);
         loginViewModel = new ViewModelProvider(requireActivity())
                 .get(LoginViewModel.class);
+        loginViewModel.getUserData();
         binding = FragmentCheckoutBinding.inflate(inflater);
         binding.paymentRG.setOnCheckedChangeListener((group, checkedId) -> {
             final RadioButton rb = container.findViewById(checkedId);
-            paymentMethod = rb.getText().toString();
+            productViewModel.paymentMethod = rb.getText().toString();
         });
-        loginViewModel.getUserData().observe(getViewLifecycleOwner(), ecomUser -> {
+        loginViewModel.getEcomUserMutableLiveData().observe(getViewLifecycleOwner(), ecomUser -> {
             if (ecomUser.getDeliveryAddress() != null) {
                 binding.deliveryAddressET.setText(ecomUser.getDeliveryAddress());
             }
@@ -54,7 +55,9 @@ public class CheckoutFragment extends Fragment {
             loginViewModel.updateDeliveryAddress(address, new OnActionCompleteListener() {
                 @Override
                 public void onSuccess() {
-                    Toast.makeText(getActivity(), "address saved", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "address saved", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(v)
+                            .navigate(R.id.action_checkoutFragment_to_confirmationFragment);
                 }
 
                 @Override

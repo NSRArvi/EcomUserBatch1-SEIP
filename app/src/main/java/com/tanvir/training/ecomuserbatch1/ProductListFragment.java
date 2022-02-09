@@ -34,13 +34,6 @@ public class ProductListFragment extends Fragment {
         binding = FragmentProductListBinding.inflate(inflater);
         loginViewModel = new ViewModelProvider(requireActivity())
                 .get(LoginViewModel.class);
-        loginViewModel.getStateLiveData()
-                .observe(getViewLifecycleOwner(), authState -> {
-                    if (authState == LoginViewModel.AuthState.UNAUTHENTICATED) {
-                        Navigation.findNavController(container)
-                                .navigate(R.id.action_productListFragment_to_loginFragment);
-                    }
-                });
         productViewModel = new ViewModelProvider(requireActivity())
                 .get(ProductViewModel.class);
         adapter = new ProductAdapter(productId -> {
